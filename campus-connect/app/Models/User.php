@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -30,6 +31,10 @@ class User extends Authenticatable
     public function donor(): HasOne
     {
         return $this->hasOne(Donor::class);
+    }
+    public function listings(): HasMany
+    {
+        return $this->hasMany(Listing::class);
     }
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
