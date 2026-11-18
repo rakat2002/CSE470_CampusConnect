@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models;
-
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -26,7 +26,11 @@ use Illuminate\Support\Carbon;
 #[Fillable(['name', 'student_id', 'department', 'phone', 'email', 'password'])]
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
 class User extends Authenticatable
-{
+{    // A student can have one donor profile
+    public function donor(): HasOne
+    {
+        return $this->hasOne(Donor::class);
+    }
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
