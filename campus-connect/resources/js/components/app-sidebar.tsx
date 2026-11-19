@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { BookOpen, Droplet, FileText, FolderGit2, HeartPulse, LayoutGrid, MessageCircleQuestion, Package, ShoppingBag, Users } from 'lucide-react';
+import { BookOpen, Droplet, FileText, FolderGit2, HeartPulse, Images, LayoutGrid, MessageCircleQuestion, Newspaper, Package, ShoppingBag, Users } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -51,6 +51,16 @@ const mainNavItems: NavItem[] = [
         title: 'Q&A Help',
         href: '/questions',
         icon: MessageCircleQuestion,
+    },
+    {
+        title: 'Weekly Newsletter',
+        href: '/newsletter',
+        icon: Newspaper,
+    },
+    {
+        title: 'Memory Gallery',
+        href: '/gallery',
+        icon: Images,
     },
 ];
 
