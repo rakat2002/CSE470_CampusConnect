@@ -1,5 +1,20 @@
+
 import { Link } from '@inertiajs/react';
-import { BookOpen, Droplet, FileText, FolderGit2, HeartPulse, Images, LayoutGrid, MessageCircleQuestion, Newspaper, Package, ShoppingBag, Users } from 'lucide-react';
+import {
+    BookOpen,
+    Droplet,
+    FileText,
+    FolderGit2,
+    HeartPulse,
+    Images,
+    MessageCircleQuestion,
+    Newspaper,
+    Package,
+    ShoppingBag,
+    Users,
+    ClipboardList,
+    Star,
+} from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -17,7 +32,7 @@ import { dashboard } from '@/routes';
 import type { NavItem } from '@/types';
 
 const mainNavItems: NavItem[] = [
-        {
+    {
         title: 'Find Donors',
         href: '/blood/donors',
         icon: Droplet,
@@ -27,7 +42,7 @@ const mainNavItems: NavItem[] = [
         href: '/blood/my-donor',
         icon: HeartPulse,
     },
-        {
+    {
         title: 'Marketplace',
         href: '/marketplace',
         icon: ShoppingBag,
@@ -41,6 +56,16 @@ const mainNavItems: NavItem[] = [
         title: 'Collaboration Hub',
         href: '/collaboration',
         icon: Users,
+    },
+    {
+        title: 'Personal Study Planner',
+        href: '/study-planner',
+        icon: ClipboardList,
+    },
+    {
+        title: 'Feedback & Rating',
+        href: '/feedback',
+        icon: Star,
     },
     {
         title: 'Study Resources',
