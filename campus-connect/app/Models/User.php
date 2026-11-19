@@ -27,7 +27,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
-#[Fillable(['name', 'student_id', 'department', 'phone', 'email', 'password'])]
+#[Fillable(['name', 'student_id', 'department', 'phone', 'role', 'email', 'password'])]
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -67,6 +67,28 @@ class User extends Authenticatable
             'user_id',
             'collaboration_post_id'
         );
+    }
+
+    // ===== Member 5: Campus Newsletter & Memory Gallery =====
+
+    public function newsletterArticles(): HasMany
+    {
+        return $this->hasMany(NewsletterArticle::class);
+    }
+
+    public function newsletterBookmarks(): HasMany
+    {
+        return $this->hasMany(NewsletterBookmark::class);
+    }
+
+    public function galleryAlbums(): HasMany
+    {
+        return $this->hasMany(GalleryAlbum::class);
+    }
+
+    public function galleryItems(): HasMany
+    {
+        return $this->hasMany(GalleryItem::class);
     }
 
     /**

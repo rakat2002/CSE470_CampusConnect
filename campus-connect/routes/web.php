@@ -4,7 +4,9 @@ use App\Http\Controllers\CollaborationInvitationController;
 use App\Http\Controllers\CollaborationPostController;
 use App\Http\Controllers\ContentReportController;
 use App\Http\Controllers\DonorController;
+use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\ListingController;
+use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\StudyResourceController;
 use Illuminate\Support\Facades\Route;
@@ -83,6 +85,27 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/content-reports', [ContentReportController::class, 'index'])->name('content-reports.index');
     Route::patch('/content-reports/{contentReport}/hide', [ContentReportController::class, 'hide'])->name('content-reports.hide');
     Route::patch('/content-reports/{contentReport}/dismiss', [ContentReportController::class, 'dismiss'])->name('content-reports.dismiss');
+
+    // ===== Campus Newsletter - Weekly (Member 5) =====
+    Route::get('/newsletter', [NewsletterController::class, 'index'])->name('newsletter.index');
+    Route::get('/newsletter/submit', [NewsletterController::class, 'createSubmission'])->name('newsletter.submit');
+    Route::post('/newsletter/submit', [NewsletterController::class, 'storeSubmission'])->name('newsletter.submit.store');
+    Route::get('/newsletter/article/{article}', [NewsletterController::class, 'show'])->name('newsletter.show');
+    Route::post('/newsletter/article/{article}/bookmark', [NewsletterController::class, 'toggleBookmark'])->name('newsletter.bookmark');
+    Route::get('/newsletter/admin', [NewsletterController::class, 'adminIndex'])->name('newsletter.admin');
+    Route::post('/newsletter/admin/editions', [NewsletterController::class, 'storeEdition'])->name('newsletter.editions.store');
+    Route::patch('/newsletter/admin/editions/{edition}/publish', [NewsletterController::class, 'publishEdition'])->name('newsletter.editions.publish');
+    Route::patch('/newsletter/admin/articles/{article}/status', [NewsletterController::class, 'updateSubmissionStatus'])->name('newsletter.articles.status');
+
+    // ===== Campus Memory Gallery (Member 5) =====
+    Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
+    Route::post('/gallery/albums', [GalleryController::class, 'storeAlbum'])->name('gallery.albums.store');
+    Route::get('/gallery/albums/{album}', [GalleryController::class, 'showAlbum'])->name('gallery.album.show');
+    Route::post('/gallery/media', [GalleryController::class, 'storeMedia'])->name('gallery.media.store');
+    Route::post('/gallery/media/{item}/like', [GalleryController::class, 'toggleLike'])->name('gallery.media.like');
+    Route::post('/gallery/media/{item}/comments', [GalleryController::class, 'storeComment'])->name('gallery.comments.store');
+    Route::delete('/gallery/comments/{comment}', [GalleryController::class, 'destroyComment'])->name('gallery.comments.destroy');
+    Route::delete('/gallery/media/{item}', [GalleryController::class, 'destroyMedia'])->name('gallery.media.destroy');
 });
 
 require __DIR__.'/settings.php';
