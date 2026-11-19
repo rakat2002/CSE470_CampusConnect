@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { BookOpen, FolderGit2, LayoutGrid } from 'lucide-react';
+import { BookOpen, Droplet, FolderGit2, HeartPulse, LayoutGrid, Package, ShoppingBag } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -17,10 +17,25 @@ import { dashboard } from '@/routes';
 import type { NavItem } from '@/types';
 
 const mainNavItems: NavItem[] = [
+        {
+        title: 'Find Donors',
+        href: '/blood/donors',
+        icon: Droplet,
+    },
     {
-        title: 'Dashboard',
-        href: dashboard(),
-        icon: LayoutGrid,
+        title: 'My Donor Profile',
+        href: '/blood/my-donor',
+        icon: HeartPulse,
+    },
+        {
+        title: 'Marketplace',
+        href: '/marketplace',
+        icon: ShoppingBag,
+    },
+    {
+        title: 'My Listings',
+        href: '/marketplace/mine',
+        icon: Package,
     },
 ];
 
