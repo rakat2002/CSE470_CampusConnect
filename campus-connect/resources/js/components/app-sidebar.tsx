@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { BookOpen, Droplet, FolderGit2, HeartPulse, LayoutGrid, Package, ShoppingBag } from 'lucide-react';
+import { BookOpen, Droplet, FileText, FolderGit2, HeartPulse, LayoutGrid, MessageCircleQuestion, Package, ShoppingBag, Users } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -36,6 +36,21 @@ const mainNavItems: NavItem[] = [
         title: 'My Listings',
         href: '/marketplace/mine',
         icon: Package,
+    },
+    {
+        title: 'Collaboration Hub',
+        href: '/collaboration',
+        icon: Users,
+    },
+    {
+        title: 'Study Resources',
+        href: '/resources',
+        icon: FileText,
+    },
+    {
+        title: 'Q&A Help',
+        href: '/questions',
+        icon: MessageCircleQuestion,
     },
 ];
 

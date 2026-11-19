@@ -2,8 +2,11 @@
 
 use App\Http\Controllers\CollaborationInvitationController;
 use App\Http\Controllers\CollaborationPostController;
+use App\Http\Controllers\ContentReportController;
 use App\Http\Controllers\DonorController;
 use App\Http\Controllers\ListingController;
+use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\StudyResourceController;
 use Illuminate\Support\Facades\Route;
 
 Route::inertia('/', 'welcome')->name('home');
@@ -56,6 +59,30 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::patch('/collaboration-invitations/{collaborationInvitation}/decline', [CollaborationInvitationController::class, 'decline'])
         ->name('collaboration.invitations.decline');
+
+    // ===== Academic Resource and Help Hub (Member 2) =====
+    // Part A: resources
+    Route::get('/resources', [StudyResourceController::class, 'index'])->name('resources.index');
+    Route::post('/resources', [StudyResourceController::class, 'store'])->name('resources.store');
+    Route::patch('/resources/{studyResource}', [StudyResourceController::class, 'update'])->name('resources.update');
+    Route::delete('/resources/{studyResource}', [StudyResourceController::class, 'destroy'])->name('resources.destroy');
+    Route::get('/resources/{studyResource}/download', [StudyResourceController::class, 'download'])->name('resources.download');
+    Route::patch('/resources/{studyResource}/toggle-hidden', [StudyResourceController::class, 'toggleHidden'])->name('resources.toggle-hidden');
+
+    // Part B: questions and replies
+    Route::get('/questions', [QuestionController::class, 'index'])->name('questions.index');
+    Route::post('/questions', [QuestionController::class, 'store'])->name('questions.store');
+    Route::get('/questions/{question}', [QuestionController::class, 'show'])->name('questions.show');
+    Route::post('/questions/{question}/replies', [QuestionController::class, 'storeReply'])->name('questions.replies.store');
+    Route::patch('/questions/{question}/toggle-hidden', [QuestionController::class, 'toggleHidden'])->name('questions.toggle-hidden');
+    Route::patch('/replies/{reply}/accept', [QuestionController::class, 'acceptReply'])->name('replies.accept');
+    Route::patch('/replies/{reply}/toggle-hidden', [QuestionController::class, 'toggleReplyHidden'])->name('replies.toggle-hidden');
+
+    // Reports (students report; admin reviews)
+    Route::post('/content-reports', [ContentReportController::class, 'store'])->name('content-reports.store');
+    Route::get('/content-reports', [ContentReportController::class, 'index'])->name('content-reports.index');
+    Route::patch('/content-reports/{contentReport}/hide', [ContentReportController::class, 'hide'])->name('content-reports.hide');
+    Route::patch('/content-reports/{contentReport}/dismiss', [ContentReportController::class, 'dismiss'])->name('content-reports.dismiss');
 });
 
 require __DIR__.'/settings.php';
