@@ -2,10 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\CollaborationPost;
+use App\Models\CollaborationRequest;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
@@ -29,6 +33,41 @@ class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
+
+    // ===== Member 1: Blood Donation and Marketplace =====
+
+    // A student can have one donor profile
+    public function donor(): HasOne
+    {
+        return $this->hasOne(Donor::class);
+    }
+
+    public function listings(): HasMany
+    {
+        return $this->hasMany(Listing::class);
+    }
+
+    // ===== Member 2: Student Collaboration Hub =====
+
+    public function collaborationPosts()
+    {
+        return $this->hasMany(CollaborationPost::class);
+    }
+
+    public function collaborationRequests()
+    {
+        return $this->hasMany(CollaborationRequest::class);
+    }
+
+    public function receivedCollaborationRequests()
+    {
+        return $this->hasManyThrough(
+            CollaborationRequest::class,
+            CollaborationPost::class,
+            'user_id',
+            'collaboration_post_id'
+        );
+    }
 
     /**
      * Get the attributes that should be cast.
