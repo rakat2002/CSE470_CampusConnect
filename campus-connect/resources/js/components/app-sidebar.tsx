@@ -1,5 +1,5 @@
-import { Link } from '@inertiajs/react';
-import { BookOpen, Droplet, FileText, FolderGit2, HeartPulse, Images, LayoutGrid, MessageCircleQuestion, Newspaper, Package, ShoppingBag, Users } from 'lucide-react';
+import { Link, usePage } from '@inertiajs/react';
+import { Droplet, FileText, HeartPulse, Images, LayoutGrid, MessageCircleQuestion, Newspaper, Package, ShieldCheck, ShoppingBag, Users } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -17,7 +17,12 @@ import { dashboard } from '@/routes';
 import type { NavItem } from '@/types';
 
 const mainNavItems: NavItem[] = [
-        {
+    {
+        title: 'Dashboard',
+        href: dashboard(),
+        icon: LayoutGrid,
+    },
+    {
         title: 'Find Donors',
         href: '/blood/donors',
         icon: Droplet,
@@ -27,7 +32,7 @@ const mainNavItems: NavItem[] = [
         href: '/blood/my-donor',
         icon: HeartPulse,
     },
-        {
+    {
         title: 'Marketplace',
         href: '/marketplace',
         icon: ShoppingBag,
@@ -64,20 +69,16 @@ const mainNavItems: NavItem[] = [
     },
 ];
 
-const footerNavItems: NavItem[] = [
-    {
-        title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
-        icon: FolderGit2,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#react',
-        icon: BookOpen,
-    },
-];
+const footerNavItems: NavItem[] = [];
 
 export function AppSidebar() {
+    // Read the logged-in user; admins get one extra menu item
+    const { auth } = usePage().props as unknown as { auth: { user: { role?: string } } };
+    const navItems: NavItem[] =
+        auth.user?.role === 'admin'
+            ? [...mainNavItems, { title: 'Admin Panel', href: '/admin', icon: ShieldCheck }]
+            : mainNavItems;
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
@@ -93,7 +94,7 @@ export function AppSidebar() {
             </SidebarHeader>
 
             <SidebarContent>
-                <NavMain items={mainNavItems} />
+                <NavMain items={navItems} />
             </SidebarContent>
 
             <SidebarFooter>

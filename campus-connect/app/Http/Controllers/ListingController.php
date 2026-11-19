@@ -62,9 +62,40 @@ class ListingController extends Controller
         ]);
     }
 
-    public function store(Request $request): RedirectResponse
+        public function store(Request $request): RedirectResponse
     {
-        $request->user()->listings()->create($this->validatedData($request)); // new listing = available
+        $data = $this->validatedData($request);
+        $data['status'] = 'pending'; // Admin must approve before it appears in search
+
+        $request->user()->listings()->create($data);
+
+        return redirect()->route('listings.mine');
+    }
+
+    public function update(Request $request, Listing $listing): RedirectResponse
+    {
+        $this->ensureOwner($request, $listing);
+        abort_if($listing->status === 'sold', 403, 'Sold listings cannot be edited.');
+
+        $data = $this->validatedData($request);
+
+        // A rejected listing that is fixed goes back to the Admin for review
+        if ($listing->status === 'rejected') {
+            $data['status'] = 'pending';
+            $data['rejection_reason'] = null;
+        }
+
+        $listing->update($data);
+
+        return redirect()->route('listings.mine');
+    }
+
+    public function markSold(Request $request, Listing $listing): RedirectResponse
+    {
+        $this->ensureOwner($request, $listing);
+        abort_unless($listing->status === 'available', 403, 'Only approved, available listings can be marked sold.');
+
+        $listing->update(['status' => 'sold']);
 
         return redirect()->route('listings.mine');
     }
@@ -80,15 +111,7 @@ class ListingController extends Controller
         ]);
     }
 
-    public function update(Request $request, Listing $listing): RedirectResponse
-    {
-        $this->ensureOwner($request, $listing);
-        abort_if($listing->status === 'sold', 403, 'Sold listings cannot be edited.');
-
-        $listing->update($this->validatedData($request));
-
-        return redirect()->route('listings.mine');
-    }
+   
 
     public function destroy(Request $request, Listing $listing): RedirectResponse
     {
@@ -98,13 +121,7 @@ class ListingController extends Controller
         return redirect()->route('listings.mine');
     }
 
-    public function markSold(Request $request, Listing $listing): RedirectResponse
-    {
-        $this->ensureOwner($request, $listing);
-        $listing->update(['status' => 'sold']);
-
-        return redirect()->route('listings.mine');
-    }
+   
 
     // Validation rules shared by create and edit
     private function validatedData(Request $request): array

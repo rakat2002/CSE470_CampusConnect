@@ -24,12 +24,13 @@ class DonorDemoSeeder extends Seeder
                 ['name' => $name, 'email' => "{$sid}@demo.test", 'department' => $dept, 'password' => 'password123']
             );
 
-            $user->donor()->updateOrCreate([], [
+                        $user->donor()->updateOrCreate([], [
                 'blood_group' => $group,
                 'area' => $area,
                 'phone' => '01700000'.substr($sid, -3),
                 'is_available' => $available,
                 'last_donation_date' => $last,
+                'approval_status' => 'approved',
             ]);
         }
     }
