@@ -17,6 +17,10 @@ use Illuminate\Support\Carbon;
 /**
  * @property int $id
  * @property string $name
+ * @property string $student_id
+ * @property string $department
+ * @property string|null $phone
+ * @property string $role
  * @property string $email
  * @property Carbon|null $email_verified_at
  * @property string $password
@@ -34,6 +38,13 @@ class User extends Authenticatable
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
+    // ===== Shared: roles =====
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
     // ===== Member 1: Blood Donation and Marketplace =====
 
     // A student can have one donor profile
@@ -42,6 +53,7 @@ class User extends Authenticatable
         return $this->hasOne(Donor::class);
     }
 
+    // A student can sell many items
     public function listings(): HasMany
     {
         return $this->hasMany(Listing::class);

@@ -13,8 +13,9 @@ class Donor extends Model
     // Minimum days between donations. Later the Admin will set this value.
     public const DONATION_GAP_DAYS = 120;
 
-    protected $fillable = [
+        protected $fillable = [
         'blood_group', 'area', 'phone', 'is_available', 'last_donation_date',
+        'approval_status', 'rejection_reason',
     ];
 
     protected function casts(): array
@@ -31,10 +32,12 @@ class Donor extends Model
         return $this->belongsTo(User::class);
     }
 
-    // Business rule: only Available donors outside the donation gap
+    
+       // Business rule: only APPROVED + Available donors outside the donation gap
     public function scopeEligible(Builder $query): Builder
     {
-        return $query->where('is_available', true)
+        return $query->where('approval_status', 'approved')
+            ->where('is_available', true)
             ->where(function (Builder $q) {
                 $q->whereNull('last_donation_date')
                   ->orWhere('last_donation_date', '<=', now()->subDays(self::DONATION_GAP_DAYS)->toDateString());

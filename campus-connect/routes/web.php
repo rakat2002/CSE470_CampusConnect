@@ -1,11 +1,12 @@
+
 <?php
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\StudyPlannerController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\FeedbackReportController;
-
 use App\Http\Controllers\CollaborationInvitationController;
 use App\Http\Controllers\CollaborationPostController;
 use App\Http\Controllers\ContentReportController;
@@ -136,6 +137,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/gallery/media/{item}/comments', [GalleryController::class, 'storeComment'])->name('gallery.comments.store');
     Route::delete('/gallery/comments/{comment}', [GalleryController::class, 'destroyComment'])->name('gallery.comments.destroy');
     Route::delete('/gallery/media/{item}', [GalleryController::class, 'destroyMedia'])->name('gallery.media.destroy');
+});
+
+// ===== Admin Panel (Member 1) — only users with role = admin =====
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [AdminController::class, 'index'])->name('dashboard');
+    Route::patch('listings/{listing}/approve', [AdminController::class, 'approveListing'])->name('listings.approve');
+    Route::patch('listings/{listing}/reject', [AdminController::class, 'rejectListing'])->name('listings.reject');
+    Route::patch('donors/{donor}/approve', [AdminController::class, 'approveDonor'])->name('donors.approve');
+    Route::patch('donors/{donor}/reject', [AdminController::class, 'rejectDonor'])->name('donors.reject');
 });
 
 require __DIR__.'/settings.php';

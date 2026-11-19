@@ -11,6 +11,8 @@ type Donor = {
     phone: string;
     is_available: boolean;
     last_donation_date: string | null;
+    approval_status: 'pending' | 'approved' | 'rejected';
+    rejection_reason: string | null;
 };
 
 type Props = {
@@ -56,6 +58,15 @@ export default function MyDonor({ donor, bloodGroups, gapDays }: Props) {
                 <p className="mb-6 text-sm text-muted-foreground">
                     Your phone number is never shown in donor search.
                 </p>
+                                {donor?.approval_status === 'pending' && (
+                    <p className="mb-5 rounded-md bg-amber-100 p-3 text-sm text-amber-900">⏳ Waiting for Admin approval. You will appear in donor search after approval.</p>
+                )}
+                {donor?.approval_status === 'approved' && (
+                    <p className="mb-5 rounded-md bg-emerald-100 p-3 text-sm text-emerald-900">✅ Approved — you are a verified donor.</p>
+                )}
+                {donor?.approval_status === 'rejected' && (
+                    <p className="mb-5 rounded-md bg-red-100 p-3 text-sm text-red-900">❌ Rejected: {donor.rejection_reason}. Update your details to resubmit.</p>
+                )}
 
                 <form onSubmit={submit} className="grid gap-5">
                     <div className="grid gap-2">
