@@ -6,11 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class ContentReport extends Model
 {
-    // What students can report in the Resource and Help Hub
+    // What students can report in the Resource and Help Hub, Gallery & Newsletter
     public const TYPES = [
         'resource' => StudyResource::class,
         'question' => Question::class,
         'reply' => Reply::class,
+        'gallery_item' => GalleryItem::class,
+        'newsletter_article' => NewsletterArticle::class,
     ];
 
     protected $fillable = [
