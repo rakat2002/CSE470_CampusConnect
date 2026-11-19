@@ -1,4 +1,5 @@
 <?php
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ListingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DonorController;
@@ -21,5 +22,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('marketplace/{listing}', [ListingController::class, 'destroy'])->name('listings.destroy');
     Route::patch('marketplace/{listing}/sold', [ListingController::class, 'markSold'])->name('listings.sold');
 });
+    // Admin Panel — only users with role = admin
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [AdminController::class, 'index'])->name('dashboard');
+    Route::patch('listings/{listing}/approve', [AdminController::class, 'approveListing'])->name('listings.approve');
+    Route::patch('listings/{listing}/reject', [AdminController::class, 'rejectListing'])->name('listings.reject');
+    Route::patch('donors/{donor}/approve', [AdminController::class, 'approveDonor'])->name('donors.approve');
+    Route::patch('donors/{donor}/reject', [AdminController::class, 'rejectDonor'])->name('donors.reject');
+});
+
 
 require __DIR__.'/settings.php';

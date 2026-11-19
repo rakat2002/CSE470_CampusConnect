@@ -36,6 +36,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Listing::class);
     }
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 

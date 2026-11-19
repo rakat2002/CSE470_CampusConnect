@@ -51,7 +51,7 @@ class DonorController extends Controller
     }
 
     // Register as donor (first time) or update (later)
-    public function save(Request $request): RedirectResponse
+      public function save(Request $request): RedirectResponse
     {
         $data = $request->validate([
             'blood_group' => ['required', Rule::in(Donor::BLOOD_GROUPS)],
@@ -61,6 +61,14 @@ class DonorController extends Controller
             'last_donation_date' => ['nullable', 'date', 'before_or_equal:today'],
         ]);
 
+        // A rejected donor who updates their profile is sent back for review
+        $existing = $request->user()->donor;
+        if ($existing && $existing->approval_status === 'rejected') {
+            $data['approval_status'] = 'pending';
+            $data['rejection_reason'] = null;
+        }
+
+        // New donors get approval_status = pending automatically (database default)
         $request->user()->donor()->updateOrCreate([], $data);
 
         return redirect()->route('donors.edit');

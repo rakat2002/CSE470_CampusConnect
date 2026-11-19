@@ -11,7 +11,7 @@ class Listing extends Model
 
     public const CONDITIONS = ['New', 'Like New', 'Good', 'Fair'];
 
-    protected $fillable = ['name', 'description', 'price', 'category', 'condition', 'status'];
+       protected $fillable = ['name', 'description', 'price', 'category', 'condition', 'status', 'rejection_reason'];
 
     protected function casts(): array
     {

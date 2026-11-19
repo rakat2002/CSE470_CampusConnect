@@ -6,7 +6,8 @@ type Listing = {
     name: string;
     price: string;
     category: string;
-    status: 'available' | 'sold';
+    status: 'pending' | 'available' | 'rejected' | 'sold';
+    rejection_reason: string | null;
 };
 
 type Props = { listings: Listing[] };
@@ -53,23 +54,37 @@ export default function MyListings({ listings }: Props) {
                                         <td className="p-3 font-medium">{l.name}</td>
                                         <td className="p-3">{l.category}</td>
                                         <td className="p-3">৳{l.price}</td>
+
+                                        {/* STATUS */}
                                         <td className="p-3">
-                                            {l.status === 'sold' ? (
+                                            {l.status === 'pending' && (
+                                                <span className="rounded-full bg-amber-100 px-2 py-1 text-xs text-amber-800">Waiting for approval</span>
+                                            )}
+                                            {l.status === 'available' && (
+                                                <span className="rounded-full bg-emerald-100 px-2 py-1 text-xs text-emerald-800">Live</span>
+                                            )}
+                                            {l.status === 'sold' && (
                                                 <span className="rounded-full bg-gray-200 px-2 py-1 text-xs text-gray-700">Sold</span>
-                                            ) : (
-                                                <span className="rounded-full bg-emerald-100 px-2 py-1 text-xs text-emerald-800">Available</span>
+                                            )}
+                                            {l.status === 'rejected' && (
+                                                <div>
+                                                    <span className="rounded-full bg-red-100 px-2 py-1 text-xs text-red-800">Rejected</span>
+                                                    <p className="mt-1 text-xs text-red-700">{l.rejection_reason} — edit to resubmit</p>
+                                                </div>
                                             )}
                                         </td>
+
+                                        {/* ACTIONS */}
                                         <td className="flex flex-wrap gap-2 p-3">
+                                            {l.status !== 'sold' && (
+                                                <Link href={`/marketplace/${l.id}/edit`}>
+                                                    <Button size="sm" variant="outline">Edit</Button>
+                                                </Link>
+                                            )}
                                             {l.status === 'available' && (
-                                                <>
-                                                    <Link href={`/marketplace/${l.id}/edit`}>
-                                                        <Button size="sm" variant="outline">Edit</Button>
-                                                    </Link>
-                                                    <Button size="sm" variant="outline" onClick={() => markSold(l.id)}>
-                                                        Mark sold
-                                                    </Button>
-                                                </>
+                                                <Button size="sm" variant="outline" onClick={() => markSold(l.id)}>
+                                                    Mark sold
+                                                </Button>
                                             )}
                                             <Button size="sm" variant="destructive" onClick={() => remove(l.id)}>
                                                 Delete
