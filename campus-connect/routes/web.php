@@ -2,7 +2,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\StudyPlannerController;
 use App\Http\Controllers\FeedbackController;
@@ -24,6 +24,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'dashboard')->name('dashboard');
 
     // ===== Study Planner (Tisha) =====
+    Route::get('/faculty', [FacultyController::class, 'index'])
+    ->name('faculty.index');
     Route::get('/study-planner', [StudyPlannerController::class, 'index'])
         ->name('study-planner.index');
 

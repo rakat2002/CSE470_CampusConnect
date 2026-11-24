@@ -16,6 +16,7 @@ import {
     Users,
     ClipboardList,
     Star,
+    GraduationCap
 } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
@@ -38,6 +39,11 @@ const mainNavItems: NavItem[] = [
         title: 'Dashboard',
         href: dashboard(),
         icon: LayoutGrid,
+    },
+    {
+    title: 'Faculty Directory',
+    href: '/faculty',
+    icon: GraduationCap,
     },
     {
         title: 'Find Donors',
