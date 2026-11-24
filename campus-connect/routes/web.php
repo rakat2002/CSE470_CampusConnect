@@ -16,6 +16,7 @@ use App\Http\Controllers\ListingController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\StudyResourceController;
+use App\Http\Controllers\TransportRouteController;
 
 Route::inertia('/', 'welcome')->name('home');
 
@@ -137,6 +138,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/gallery/media/{item}/comments', [GalleryController::class, 'storeComment'])->name('gallery.comments.store');
     Route::delete('/gallery/comments/{comment}', [GalleryController::class, 'destroyComment'])->name('gallery.comments.destroy');
     Route::delete('/gallery/media/{item}', [GalleryController::class, 'destroyMedia'])->name('gallery.media.destroy');
+        // ===== Transport Schedule (Ajanta) =====
+    Route::get('/transport', [TransportRouteController::class, 'index'])->name('transport.index');
 });
 
 // ===== Admin Panel (Member 1) — only users with role = admin =====
